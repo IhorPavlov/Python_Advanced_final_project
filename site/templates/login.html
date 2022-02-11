@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if message %}
+    <h2>{{message}}</h2>
+    <br><br>
+{% endif %}
+
+
+<div class="signInCol" id="signIn">
+    <form method="post">
+        <h1>Sign in</h1><br>
+        <input type="text" name="email" placeholder="Email" required>
+        <input type="password" name="psw" placeholder="Password" required>
+
+        <br><br>
+        <center><button type="submit" class="minWidth">Sign in</button></center>
+    </form>
+</div>
+{% endblock %}

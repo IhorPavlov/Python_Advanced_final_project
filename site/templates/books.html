@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="rightCol">
+    {% if books %}
+        <h1>All books in library</h1>
+        <table>
+            <thead>
+            <tr>
+                <th><center>ID</center></th>
+                <th><center>Title</center></th>
+                <th><center>Author</center></th>
+                <th><center>Year</center></th>
+                <th><center>In stock</center></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>{{book.id}}</td>
+                    <td>{{book.title}}</td>
+                    <td>{{book.author}}</td>
+                    <td>{{book.year}}</td>
+                    {% if book.reader %}
+                        <td> - </td>
+                    {% else %}
+                        <td>Yes</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+    <h1>No books yet</h1>
+    {% endif %}
+</div>
+{% endblock %}
