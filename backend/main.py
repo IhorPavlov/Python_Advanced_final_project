@@ -1,13 +1,7 @@
-# from Library.storages.orm_storage import ORMStorage
-# # from client_handler import ClientHandler
-# from Library.library import Library
-# from socket import socket
-
-
 from flask import Flask, render_template, request
-
 from Library.library import Library
 from Library.storages.orm_storage import ORMStorage
+from backend.search_form import SearchForm
 
 CURRENT_USER_ID = 1
 
@@ -37,9 +31,55 @@ if not lib.get_all_books():
     lib.load_books_from_txt_file('books.txt', sep='$!$')
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    search = SearchForm()
+    print(search)
+    if request.method == 'POST':
+
+
+        if not (search):
+            return render_template('add_book.html', message='Введены некорректные данные')
+        print(search)
+        # ret_code, ret_msg = lib.add_book(title_book)
+        return render_template('index.html', message='ret_msg')
+
     return render_template('index.html')
+
+
+
+    # search_book_form = SearchForm()
+    #
+    # if request.method == 'POST':
+    #     if search_book_form.validate_on_submit():
+    #         print(search_book_form.title.data)
+    #
+    #     else:
+    #         print('Error')
+    #
+    # return render_template('index.html', form=search_book_form)
+
+
+
+    # search = SearchForm(request.form)
+    # if request.method == 'POST':
+    #     print(search)
+    #     return api_get_all_books()
+    #
+    # return render_template('index.html', form=search)
+
+
+    # if request.method == 'POST':
+    #     search = request.form.get('search')
+    #
+    #     # if not (title_book and author_book and year_book):
+    #     #     return render_template('add_book.html', message='Введены некорректные данные')
+    #     # if not year_book.isnumeric():
+    #     #     return render_template('add_book.html', message='Введен некорректный год издания')
+    #
+    #     print(search)
+
+    # return render_template('index.html')
 
 
 @app.route('/books', methods=['GET'])
@@ -85,7 +125,7 @@ def api_delete_book():
         id_books = [int(i) for i in request.form.keys() if i.isnumeric()]
 
         if len(id_books):
-            ret_msg = lib.remove_books(id_books)
+            ret_code, ret_msg = lib.remove_books(id_books)
             return render_template('delete_book.html',
                                    books=sorted(lib.get_all_books(), key=lambda book: book.id),
                                    message=ret_msg)
@@ -99,7 +139,8 @@ def api_take_book():
         id_books = [int(i) for i in request.form.keys() if i.isnumeric()]
 
         if len(id_books):
-            message = lib.give_books(id_books, CURRENT_USER_ID)
+            ret_code, message = lib.books_for_reader(id_books, reader_id = 1)
+            #вместо reader_id = 1 вставить CURRENT_USER_ID
             return render_template('take_book.html',
                                    books=sorted(lib.get_available_books(), key=lambda book: book.id),
                                    message=message)
@@ -113,7 +154,7 @@ def api_return_book():
         id_books = [int(i) for i in request.form.keys() if i.isnumeric()]
 
         if len(id_books):
-            message = lib.return_books(id_books, CURRENT_USER_ID)
+            ret_code, message = lib.return_books_to_library(id_books, reader_id = 1)
             return render_template('return_book.html',
                                    books=sorted(lib.get_all_book_from_reader(CURRENT_USER_ID),
                                                 key=lambda book: book.id),

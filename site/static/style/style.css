@@ -12,7 +12,7 @@ body {
 }
 
 ::selection {
-	background-color: #9f385b;
+	background-color: #2AC82A;
 	color: white;
 }
 
@@ -58,6 +58,7 @@ h1 {
 
 h1::first-letter {
 	color: #ae4b5d;
+;
 }
 
 h2 {
@@ -77,7 +78,8 @@ h4 {
 }
 
 h5 {
-
+    font-size: 16px;
+	color: #ae4b5d;
 }
 
 h6 {
@@ -135,8 +137,8 @@ table {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	background-color: #282d33;
-	color: #9da4af;
+	background-color: white;
+	color: black;
 }
 
 table th, table td {
@@ -149,12 +151,12 @@ table th {
 	color: white;
 	font-weight: bold;
 	vertical-align: middle;
-	background-color: #9c4757;
+	background-color: #188218;
 }
 
 table td {
 	vertical-align: top;
-	border-top: 1px solid #d8dbde;
+	border-top: 1px solid black;
 }
 
 table td a {
@@ -167,7 +169,7 @@ table tbody th {
 }
 
 table th+th,table td+td,table th+td {
-	border-left: 1px solid #d8dbde;
+	border-left: 1px solid black;
 }
 
 table thead tr:first-child th:first-child, table tbody tr:first-child td:first-child {
@@ -195,8 +197,8 @@ table tbody tr:last-child td:last-child {
 }
 
 table tr:hover {
-	background-color: #622833;
-	color: #d8dbde;
+	background-color: #188218;
+	color: white;
 }
 
 /*Forms*/
@@ -217,7 +219,7 @@ input,select,textarea {
 	padding: 7px 5px;
 	line-height: 18px;
 	border: 1px solid white;
-	background-color: #e3e4e5;
+	background-color: #C2D8C2;
 	-webkit-transition: background linear 0.2s;
 	-moz-transition: background linear 0.2s;
 	-ms-transition: background linear 0.2s;
@@ -242,7 +244,7 @@ input::-webkit-input-placeholder {
 }
 
 input:focus,textarea:focus {
-	background-color: #d6d6d6;
+	background-color: #DED3A9;
 	outline: none;
 }
 
@@ -259,21 +261,21 @@ textarea {
 button {
 	cursor: pointer;
 	display: inline-block;
-	background-color: #95161f;
+	background-color: #188218;
 	background-repeat: no-repeat;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b0252e), color-stop(25%, #b0252e), to(#95161f));
-	background-image: -webkit-linear-gradient(#b0252e, #b0252e 25%, #95161f);
-	background-image: -moz-linear-gradient(top, #b0252e, #b0252e 25%, #95161f);
-	background-image: -ms-linear-gradient(#b0252e, #b0252e 25%, #95161f);
-	background-image: -o-linear-gradient(#b0252e, #b0252e 25%, #95161f);
-	background-image: linear-gradient(#b0252e, #b0252e 25%, #95161f);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b0252e', endColorstr='#95161f', GradientType=0);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#C2D8C2), color-stop(25%, #C2D8C2), to(#188218));
+	background-image: -webkit-linear-gradient(#C2D8C2, #C2D8C2 25%, #188218);
+	background-image: -moz-linear-gradient(top, #C2D8C2, #C2D8C2 25%, #188218);
+	background-image: -ms-linear-gradient(#C2D8C2, #C2D8C2 25%, #188218);
+	background-image: -o-linear-gradient(#C2D8C2, #C2D8C2 25%, #188218);
+	background-image: linear-gradient(#C2D8C2, #C2D8C2 25%, #188218);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#C2D8C2', endColorstr='#95161f', GradientType=0);
 	padding: 10px 18px 11px;
-	color: white;
+	color: #666666;
 	font-size: 15px;
 	line-height: normal;
 	font-weight: bold;
-	border: 5px solid white;
+	border: 5px solid #f5f5f5;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
 	-webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
@@ -515,11 +517,50 @@ form.search > input[type=text]:focus {
 
 .nav {
 	width: 980px;
-	height: 29px;
-	background-color: #95161f;
+	height: 48px;
+	background-color: #188218;
 	margin: 0 auto;
 	padding-top: 7px;
 }
+
+* {box-sizing: border-box;}
+body{margin: 0;}
+div {padding: 0px 0}
+form {
+  position: relative;
+  width: 300px;
+  margin: 0 auto;
+}
+.d1 {background: #188218;}
+.d1 input {
+  width: 100%;
+  height: 22px;
+  padding-left: 10px;
+  border: 2px solid #7BA7AB;
+  border-radius: 5px;
+  outline: none;
+  background: #F9F0DA;
+  color: #9E9C9C;
+}
+.d1 button {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  width: 59px;
+  height: 29px;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  padding: 0px 0px 0px;
+
+}
+.d1 button:before {
+  content: "Search";
+  font-family: FontAwesome;
+  font-size: 16px;
+  color: #F9F0DA;
+}
+
 
 ul.menu {
 	display: inline-block;
@@ -595,7 +636,7 @@ ul.general_menu li a:hover {
 .addBookCol form {
 	width: 420px;
 	background-color: #f3f3f3;
-	border: 1px solid #d8dbde;
+	border: 1px solid #66C066;
 	padding: 10px;
 	color: #757575;
 }
@@ -614,6 +655,7 @@ ul.general_menu li a:hover {
 
 .addBookCol input[type=radio],.addBookCol input[type=checkbox] {
 	width: auto;
+
 }
 
 .addBookCol p {
@@ -742,7 +784,7 @@ ul.img li:hover {
 	bottom: 0;
 	width: 100%;
 	background: #e7e4e4 url("../images/bg-footer.png") repeat;
-	border-top: 10px solid #9c4757;
+	border-top: 10px solid #188218;
 	height: 72px;
 	overflow: hidden;
 }

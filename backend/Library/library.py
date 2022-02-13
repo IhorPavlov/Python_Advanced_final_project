@@ -51,7 +51,7 @@ class Library:
                 return_msg = f'Error: книга с номером {book_id} не в библиотеке'
                 logprint.print_fail(return_msg)
                 return False, return_msg
-            reader = self.__get_reader_by_id(reader_id)
+            reader = self.get_reader_by_id(reader_id)
             if not reader:
                 return_msg = f'Error: Читателя с номером {reader_id} нет в библиотеке'
                 logprint.print_fail(return_msg)
@@ -68,15 +68,26 @@ class Library:
 
         return True, return_msg
 
-    def books_for_reader(self, book_id: list, reader_id: int) -> str:
+    def books_for_reader(self, book_id: list, reader_id: int) -> (bool,str):
         """gives several books"""
         return_msg = ''
         return_msg_error = ''
+        book_titles_list = []
         for book in book_id:
             self.book_for_reader(book, reader_id)
-        return f'book {book.get_id()} выдана читателю {reader_id}'
+            book_titles_list.append((self.__get_book_by_id(book)).get_title())
+        if len(book_titles_list) >1:
+            book_names = str(", ".join(book_titles_list))
+            return_msg = f'Книга "{book_names}" выданы читателю № {reader_id}'
+            return True, return_msg
+        elif len(book_titles_list) == 1:
+            return_msg = f'"Книга {book_titles_list[0]}" выданa читателю № {reader_id}'
+            return True, return_msg
+        else:
+            return_msg_error = 'Error'
+            return False, return_msg_error
 
-    def return_to_library(self, book_id: int, reader_id: int) -> (bool, str):
+    def return_to_library(self, book_id: int, reader_id: int) -> str:
         """return a book"""
 
         with self.__lock:
@@ -89,29 +100,37 @@ class Library:
             if not reader:
                 return_msg = f'Error: читателя с номером {reader_id} нет в библиотеке'
                 logprint.print_fail(return_msg)
-                return False, return_msg
+                return return_msg
             if book.get_reader_id() != reader.get_id():
                 reader_2 = self.get_reader_by_id(book.get_reader_id())
                 return_msg = f'Error: {reader.get_name()} не может вернуть книгу {book_id}, книга выдана {reader_2.get_name()} ({book.get_reader_id()})'
                 logprint.print_fail(return_msg)
-                return False, return_msg
+                return return_msg
             # book.set_reader_id(None)
             self.__storage.return_book(book_id, reader_id)
 
         return_msg = f'Читатель {reader.get_name()} вернул книгу "{book.get_title()}" в библиотеку'
         logprint.print_done(return_msg)
 
-        return True, return_msg
+        return return_msg
 
-    def return_books_to_library(self, book_list: list, reader_id: int) -> str:
+    def return_books_to_library(self, book_list: list, reader_id: int) -> (bool, str):
         """returns several books"""
-        pass
-
+        return_msg = ''
+        list_msg = []
+        for book in book_list:
+            list_msg.append(self.return_to_library(book, reader_id))
+        if len(list_msg) > 1:
+            return_msg = 'Выбранные книги сданы в библиотеку'
+        else:
+            return_msg = 'Книга сдана в библиотеку'
+        return True, return_msg
 
     ############# BOOKS
 
     def add_book(self, title: str, author: str, year: int = None, book_id: int = None) -> (bool, str):
         """adds a book to storage"""
+        return_msg = ''
         with self.__lock:
             book = Book(title, author, year)
             if self.__storage.add_book(book):
@@ -123,8 +142,9 @@ class Library:
                 logprint.print_fail(return_msg)
                 return False, return_msg
 
-    def remove_book(self, book_id: int) -> (bool, str):
+    def remove_book(self, book_id: int) -> str:
         """removes book from storage"""
+        return_msg = ''
         with self.__lock:
             if book_id is not None:
                 for book in self.get_all_books():
@@ -132,15 +152,23 @@ class Library:
                         self.__storage.remove_book(book_id)
                         return_msg = f'Книга № {book.get_id()} ({book.get_title()}, {book.get_author()}) удалена из библиотеки'
                         logprint.print_done(return_msg)
-                        return True, return_msg
+                        return return_msg
 
             return_msg = f'Ошибка ввода или такой книги нет в библиотеке'
         logprint.print_fail(return_msg)
-        return False, return_msg
+        return return_msg
 
-    def remove_books(self, id_book_list: list) -> (bool, str):
+    def remove_books(self, id_book_list: list) -> (bool,str):
         """removes several books from storage"""
-        pass
+        return_msg = ''
+        list_msg = []
+        for book in id_book_list:
+            list_msg.append(self.__storage.remove_book(book))
+        if len(list_msg) > 1:
+            return_msg = 'Все книги успешно удалены'
+        else:
+            return_msg = 'Книга успешно удалена'
+        return True, return_msg
 
     def __get_book_by_id(self, book_id: int) -> Union[Book, None]:
         """
@@ -151,7 +179,6 @@ class Library:
         """
         print('get_book_by_id')
         for book in self.get_all_books():
-
             if int(book.get_id()) == book_id:
                 return book
         return None
@@ -169,7 +196,7 @@ class Library:
         return [_book for _book in self.__storage.load_books() if _book.get_reader_id()]
 
     def get_all_book_from_reader(self, id_reader: int) -> list:
-        pass
+        return [_book for _book in self.__storage.load_books() if _book.get_reader_id() == id_reader]
 
     def print_sorted_book(self, sort: str = 'id', reverse: bool = False):
         if sort not in ['id', 'name', 'author', 'year']:
