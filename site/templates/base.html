@@ -27,8 +27,11 @@
 			</div>
 
 			<div class="nav">
+				{% if current_user.is_authentificated %}
+				<label class="userInfo">Hello {{current_user.get_name()}}</label>
+				{% else %}
 				<label class="userInfo">Hello Guest</label>
-
+				{% enif %}
 				<ul class="menu">
 					<li><div class="d1">
   						<form method="post">

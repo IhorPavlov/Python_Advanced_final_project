@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if message %}
-    <h2>{{message}}</h2>
+{% for category, message in get_flash_message(with_categories=true) %}
+    <h2 class="'{{category}}">{{message}}</h2>
     <br><br>
-{% endif %}
+{% endfor %}
 
 
 <div class="signInCol" id="signIn">
