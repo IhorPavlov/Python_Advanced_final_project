@@ -31,8 +31,8 @@
 
 				<ul class="menu">
 					<li><div class="d1">
-  						<form>
-							<input type="text" placeholder="Искать здесь...">
+  						<form method="post">
+							<input type="text" name="search" placeholder="Find a book here...">
 							<button type="submit"></button>
 						</form>
 					</div></li>
@@ -40,6 +40,8 @@
 					<li><a href="login">Sign In</a></li>
 					<li><a href="registration">Sign Up</a></li>
 				</ul>
+
+
 
 			</div>
 
@@ -64,6 +66,20 @@
 
 			</div>
 
+			{#
+    <form method="post">
+        {{ form.csrf_token() }}
+
+        {% for field in form if field.name != 'csrf_token' %}
+            <p>{{ field.label() }}</p>
+            <p>{{ field }}
+                {% for error in field.errors %}
+                    {{ error }}
+                {% endfor %}
+            </p>
+        {% endfor %}
+    </form>
+#}
 			<div class="footer">
 				<div class="footerContent">
 					<h1>Copyright © 2022 PAVLOV IHOR</h1>

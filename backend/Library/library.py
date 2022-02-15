@@ -41,6 +41,19 @@ class Library:
         return True
 
     ############# GIVE - RETURN
+    def search_book(self, book: str) -> list:
+        search_res_list = []
+        for i in self.get_all_books():
+            if str(Book.get_title(i)) == book:
+                search_res_list.append(i)
+            elif str(Book.get_author(i)) == book:
+                search_res_list.append(i)
+            elif str(Book.get_year(i)) == book:
+                search_res_list.append(i)
+        print(search_res_list)
+        return search_res_list
+
+
 
     def book_for_reader(self, book_id: int, reader_id: int) -> (bool, str):
         """gives a book"""
@@ -198,10 +211,10 @@ class Library:
     def get_all_book_from_reader(self, id_reader: int) -> list:
         return [_book for _book in self.__storage.load_books() if _book.get_reader_id() == id_reader]
 
-    def print_sorted_book(self, sort: str = 'id', reverse: bool = False):
+    def get_sorted_book(self, sort: str = 'id', reverse: bool = False) -> list:
         if sort not in ['id', 'name', 'author', 'year']:
             print(f'Error: no sorting by {sort} field')
-            return
+            return []
 
         def get_sort_field(book: Book):
             if sort == 'id':
@@ -213,8 +226,10 @@ class Library:
             elif sort == 'year':
                 return book.get_year()
 
+        list_sorted_book =[]
         for book in sorted(self.get_all_books(), key=get_sort_field, reverse=reverse):
-            print(book)
+            list_sorted_book.append(book)
+        return list_sorted_book
 
     ############# READERS
 

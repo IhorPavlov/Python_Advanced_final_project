@@ -2,11 +2,11 @@
 {% block content %}
 <div class="rightCol">
     {% if books %}
-        <h1>All books in library</h1>
+        <h1>Book search result</h1>
         <table>
             <thead>
             <tr>
-                <th><center><a href = "/books_sorted_by_id">ID</a></center></th>
+                <th><center>ID</center></th>
                 <th><center>Title</center></th>
                 <th><center>Author</center></th>
                 <th><center>Year</center></th>
@@ -29,18 +29,6 @@
             {% endfor %}
             </tbody>
         </table>
-
-
-        {% if books %}
-            <th class="active"><a href="/books" >1</a></th>
-                <th><a href="/books?page2" >2</a></th>
-                <th><a href="/books?page3" >3</a></th>
-                <th><a href="/books?page4" >4</a></th>
-                <th><a href="/books?page5" >5</a></th>
-                <th><a href="/books?page6" >6</a></th>
-                <th><a href="/books?page7" >7</a></th>
-                <th class="next"><a href="/books">&raquo;</a></th>
-        {% endif %}
 
     {% else %}
     <h1>No books yet</h1>

@@ -33,30 +33,37 @@ if not lib.get_all_books():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    search = SearchForm()
-    print(search)
+    # search = SearchForm()
+    # if request.method == 'POST':
+    #     title_book = request.form.get('title')
+    #     author_book = request.form.get('author')
+    #     year_book = request.form.get('year')
+    #
+    #     if not (title_book and author_book and year_book):
+    #         return render_template('add_book.html', message='Введены некорректные данные')
+    #     if not year_book.isnumeric():
+    #         return render_template('add_book.html', message='Введен некорректный год издания')
+    #
+    #     ret_code, ret_msg = lib.add_book(title_book, author_book, int(year_book))
+    #     return render_template('add_book.html', message=ret_msg)
+    #
+    # return render_template('add_book.html')
+
+    # print(search)
     if request.method == 'POST':
-
-
-        if not (search):
-            return render_template('add_book.html', message='Введены некорректные данные')
-        print(search)
-        # ret_code, ret_msg = lib.add_book(title_book)
-        return render_template('index.html', message='ret_msg')
+        search = request.form.get('search')
+        if not search:
+            return render_template('index.html', message='Введены некорректные данные')
+        return render_template('search_books.html', books = lib.search_book(search))
 
     return render_template('index.html')
 
-
-
     # search_book_form = SearchForm()
-    #
     # if request.method == 'POST':
     #     if search_book_form.validate_on_submit():
     #         print(search_book_form.title.data)
-    #
     #     else:
     #         print('Error')
-    #
     # return render_template('index.html', form=search_book_form)
 
 
@@ -65,27 +72,29 @@ def index():
     # if request.method == 'POST':
     #     print(search)
     #     return api_get_all_books()
-    #
     # return render_template('index.html', form=search)
 
 
     # if request.method == 'POST':
     #     search = request.form.get('search')
-    #
     #     # if not (title_book and author_book and year_book):
     #     #     return render_template('add_book.html', message='Введены некорректные данные')
     #     # if not year_book.isnumeric():
     #     #     return render_template('add_book.html', message='Введен некорректный год издания')
-    #
     #     print(search)
-
     # return render_template('index.html')
 
+@app.route('/search_books', methods=['GET'])
+def api_get_search_books():
+    return render_template('search_books.html')
 
-@app.route('/books', methods=['GET'])
+@app.route('/books', methods=['GET', 'POST'])
 def api_get_all_books():
-    return render_template('books.html', books=lib.get_all_books())
+    return render_template('books.html', books = lib.get_all_books())
 
+@app.route('/books_sorted_by_id', methods=['GET', 'POST'])
+def api_sort_by_id():
+    return render_template('books_sorted_by_id.html', books = lib.get_sorted_book('id'))
 
 @app.route('/add_book', methods=['GET', 'POST'])
 def api_add_book():
@@ -182,31 +191,3 @@ def api_login():
 
 if __name__ == '__main__':
     app.run()
-
-# def start_server(ip: str, port: int, lib: Library):
-#     with socket() as sock:
-#         sock.bind((ip, port))
-#         sock.listen(5)
-#
-#         while True:
-#             conn, _ = sock.accept()
-#             print(f'connected: {_}')
-#             client = ClientHandler(conn, lib)
-#             client.start()
-
-# if __name__ == '__main__':
-#
-#     ip = '127.0.0.1'
-#     port = 12347
-#
-#     storage = ORMStorage()
-#
-#     lib = Library(storage)
-#
-#     if not lib.load_books():
-#         lib.load_books_from_txt_file('./Library/init_data/books.txt', sep='$!$')
-#
-#     if not lib.load_readers():
-#         lib.load_readers_from_txt_file('./Library/init_data/readers.txt')
-#
-#     start_server(ip, port, lib)
