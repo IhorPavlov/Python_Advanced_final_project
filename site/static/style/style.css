@@ -128,7 +128,8 @@ code {
 
 /*Tables*/
 table {
-	width: 100%;
+
+    width:600px;
 	margin: 15px 0;
 	padding: 0;
 	font-size: 12px;
@@ -142,6 +143,7 @@ table {
 }
 
 table th, table td {
+
 	padding: 7px 12px 6px;
 	line-height: 18px;
 	text-align: left;
@@ -155,15 +157,18 @@ table th {
 }
 
 table td {
+
 	vertical-align: top;
 	border-top: 1px solid black;
 }
 
 table td a {
+
 	color: #d08b98;
 }
 
 table tbody th {
+
 	vertical-align: top;
 	border-top: 1px solid #d8dbde;
 }
@@ -215,8 +220,8 @@ label {
 input,select,textarea {
 	display: inline-block;
 	width: auto;
-	height: 20px;
-	padding: 7px 5px;
+	height: 30px;
+	padding: 7px 35px;
 	line-height: 18px;
 	border: 1px solid white;
 	background-color: #C2D8C2;

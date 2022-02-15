@@ -4,6 +4,7 @@ from .storages.istorage import IStorage
 from .utils import logprint
 from typing import Union
 from threading import Lock
+import re
 
 
 class Library:
@@ -41,17 +42,7 @@ class Library:
         return True
 
     ############# GIVE - RETURN
-    def search_book(self, book: str) -> list:
-        search_res_list = []
-        for i in self.get_all_books():
-            if str(Book.get_title(i)) == book:
-                search_res_list.append(i)
-            elif str(Book.get_author(i)) == book:
-                search_res_list.append(i)
-            elif str(Book.get_year(i)) == book:
-                search_res_list.append(i)
-        print(search_res_list)
-        return search_res_list
+
 
 
 
@@ -230,6 +221,19 @@ class Library:
         for book in sorted(self.get_all_books(), key=get_sort_field, reverse=reverse):
             list_sorted_book.append(book)
         return list_sorted_book
+
+    def search_book(self, book: str) -> list:
+        search_res_list = []
+        for i in self.get_all_books():
+            if re.search(book.lower(), str(Book.get_title(i)).lower()):
+                search_res_list.append(i)
+            elif re.search(book.lower(), str(Book.get_author(i)).lower()):
+                search_res_list.append(i)
+            elif str(Book.get_year(i)) == book:
+                search_res_list.append(i)
+        print(search_res_list)
+        return search_res_list
+
 
     ############# READERS
 
