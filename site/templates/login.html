@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% for category, message in get_flash_message(with_categories=true) %}
-    <h2 class="'{{category}}">{{message}}</h2>
+{% for category, message in get_flashed_messages(with_categories=true) %}
+    <h2 class="{{category}}">{{ message }}</h2>
     <br><br>
 {% endfor %}
 

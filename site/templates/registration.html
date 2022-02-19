@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+        <h2 class="{{category}}">{{ message }}</h2>
+        <br><br>
+    {% endfor %}
+
 
 <div class="signInCol" id="signIn">
     <form method="post">
@@ -38,3 +43,4 @@
     </script>
 </div>
 {% endblock %}
+

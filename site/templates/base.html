@@ -31,7 +31,7 @@
 				<label class="userInfo">Hello {{current_user.get_name()}}</label>
 				{% else %}
 				<label class="userInfo">Hello Guest</label>
-				{% enif %}
+				{% endif %}
 				<ul class="menu">
 					<li><div class="d1">
   						<form method="post">
@@ -40,8 +40,12 @@
 						</form>
 					</div></li>
 					<li><a href="/">Home</a></li>
-					<li><a href="login">Sign In</a></li>
-					<li><a href="registration">Sign Up</a></li>
+					{% if not current_user.is_authenticated %}
+						<li><a href="login">Sign In</a></li>
+						<li><a href="registration">Sign Up</a></li>
+					{% else %}
+						<li><a href="logout">Logout</a></li>
+					{% endif %}
 				</ul>
 
 

@@ -49,7 +49,7 @@ class IStorage(ABC):
         pass
 
     @abstractmethod
-    def load_reader_by_email(self, email: str) -> Reader:
+    def load_readers_by_email(self, email: str) -> Reader:
         pass
 
     @abstractmethod

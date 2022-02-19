@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, get_flashed_messages
+from flask import Flask, render_template, request, redirect, url_for, get_flashed_messages, flash
 from Library.library import Library
 from Library.storages.orm_storage import ORMStorage
 import os
@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from email_validator import validate_email
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 
-CURRENT_USER_ID = 1
+# CURRENT_USER_ID = 1
 
 load_dotenv('.env')
 
@@ -147,7 +147,7 @@ def api_return_book():
 
 @app.route('/registration', methods=['GET', 'POST'])
 def api_registration():
-    if current_user.is_authentificated:
+    if current_user.is_authenticated:
         return redirect(url_for('index'))
 
     if request.method == 'POST':
@@ -157,31 +157,46 @@ def api_registration():
         surname = request.form.get('surname')
         year = request.form.get('year')
 
+        if not (email and psw and name and surname and year):
+            flash('Введены некорректные данные', 'error')
+            return render_template('registration.html')
+        if not year.isnumeric():
+            flash('Введен некорректный год рождения', 'error')
+            return render_template('registration.html')
 
-    try:
-        validate_email(email)
-    except:
-        return render_template('registration.html')
+        try:
+            validate_email(email)
+        except:
+            flash('Введен некорректный email', 'error')
+            return render_template('registration.html')
 
-    if lib.add_reader(name, surname, year, email, psw):
-        # flash('fffff')
-        return redirect(url_for('api_login'))
-    else:
-        return render_template('registration.html')
-    # return render_template('registration.html')
+        if lib.get_reader_by_email(email):
+            flash('Пользователь с таким email уже зарегистрирован', 'error')
+            return render_template('registration.html')
+
+        if lib.add_reader(name, surname, year, email, psw):
+            flash('Теперь вы можете войти', 'done')
+            return redirect(url_for('api_login'))
+        else:
+            flash('Сори =( Произошла неизвестная ошибка', 'error')
+            return render_template('registration.html')
+
+    return render_template('registration.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def api_login():
-    if current_user.is_authentificated:
+    if current_user.is_authenticated:
         return redirect(url_for('index'))
 
     if request.method == 'POST':
         email = request.form.get('email')
         psw = request.form.get('psw')
+        next_url = request.args.get('next')
 
         if not (email and psw):
-            return  render_template('login.html', message = 'error')
+            flash('Введены некорректные данные', 'error')
+            return render_template('login.html')
 
         reader = lib.get_reader_by_email(email)
         if reader and reader.check_psw(psw):
@@ -192,15 +207,16 @@ def api_login():
 
             return redirect(url_for('index'))
         else:
-            return render_template('login.html', message = 'error')
+            flash('Введены некорректные данные', 'error')
+            return render_template('login.html')
 
     return render_template('login.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/logout', methods=['GET'])
 @login_required
 def api_logout():
-    if request.method == 'POST':
-        logout_user()
+    logout_user()
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

@@ -237,9 +237,9 @@ class Library:
 
     ############# READERS
 
-    def add_reader(self, name: str, surname: str, year: int = None, reader_id: int = None) -> (bool, str):
+    def add_reader(self, name: str, surname: str, year: int, email: str, psw: str) -> (bool, str):
         '''добавляет нового читателя в список читателей. '''
-        reader = Reader(name, surname, year)
+        reader = Reader(name, surname, year, email, psw)
         if self.__storage.add_reader(reader):
             return_msg = f'читатель {name} {surname} успешно зарегистрирован в библиотеке'
             logprint.print_done(return_msg)
@@ -290,12 +290,13 @@ class Library:
         :param email: email читателя, которого хотим получить
         :return: obj Reader (зарегистрирован ли читатель в библиотеке); None (если не зарегистрирован)
         """
-        print('get_reader_by_email')
-        for reader in self.get_all_readers():
-
-            if int(reader.get_id()) == email:
-                return reader
-        return None
+        # print('get_reader_by_email')
+        # for reader in self.get_all_readers():
+        #
+        #     if int(reader.get_id()) == email:
+        #         return reader
+        # return None
+        return self.__storage.load_readers_by_email(email)
 
     ############# LOADING
 

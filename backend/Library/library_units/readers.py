@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String
 from ..storages.base import Base
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import UserMixin
@@ -7,19 +7,19 @@ from flask_login import UserMixin
 class Reader(Base, UserMixin):
     __tablename__ = 'readers'
 
-    id = Column('id', Integer, primary_key=True)
-    name = Column('name', String, nullable=False)
-    surname = Column('surname', String, nullable=False)
-    year = Column('year', Integer, nullable=False)
-    email = Column('email', String, nullable=False)
-    psw_hash = Column('email', String, nullable=False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=False, nullable=False)
+    surname = Column(String, unique=False, nullable=False)
+    year = Column(Integer, unique=False, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    psw_hash = Column(String, unique=True, nullable=False)
 
-    def __init__(self, name: str, surname: str, year: int, email: str, psw_hash: str):
+    def __init__(self, name: str, surname: str, year: int, email: str, psw: str):
         self.name = name
         self.surname = surname
         self.year = year
         self.email = email
-        self.psw_hash= psw_hash
+        self.psw_hash = generate_password_hash(psw)
         # self.id = _id if _id is not None else int(id(self))
 
     def get_id(self):
@@ -35,6 +35,7 @@ class Reader(Base, UserMixin):
         return self.year
 
     def check_psw(self, psw: str):
+        '''принимает введенньій пользователем пароль и сравнивает его с хеш-паролем, результат - bool'''
         return check_password_hash(self.psw_hash, psw)
 
     def __str__(self):

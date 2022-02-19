@@ -105,10 +105,13 @@ class ORMStorage(IStorage):
             return False
         return True
 
-    def load_reader_by_email(self, email: str) -> Reader:
-        load_reader = self.__session.query(Reader).filter(Reader.email == str(email)).one()
-        print(load_reader)
-        return load_reader
+    # def load_reader_by_email(self, email: str) -> Reader:
+    #     load_reader = self.__session.query(Reader).filter(Reader.email == str(email)).one()
+    #     print(load_reader)
+    #     return load_reader
+
+    def load_readers_by_email(self, email: str) -> Reader:
+        return self.__session.query(Reader).filter_by(email=email).first()
 
     def load_reader_by_id(self, id_: int) -> Reader:
         load_reader = self.__session.query(Reader).filter(Reader.id == id_).one()
