@@ -36,6 +36,12 @@ a {
 	text-decoration: underline;
 }
 
+a.active {
+	color: #95161f;
+	text-decoration: underline;
+	font-size: 22px;
+}
+
 a:hover {
 
 }
@@ -504,7 +510,7 @@ form.search > input[type=text]:focus {
 }
 
 .descSlide h1+p {
-	color: #282D33;
+	color: #a5adb8;
 	font-size: 18px;
 	font-weight: bold;
 	margin: 0;
@@ -633,7 +639,7 @@ ul.general_menu li a:hover {
 }
 /*Main*/
 .main {
-	width: 940px;
+	width: 980px;
 	padding: 20px 20px 270px;
 	overflow: hidden;
 	background-color: white;

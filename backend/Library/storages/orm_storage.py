@@ -118,3 +118,6 @@ class ORMStorage(IStorage):
         print(load_reader)
         return load_reader
 
+    def load_several_books(self, page: int, page_size: int) -> list:
+        return self.__session.query(Book).order_by(Book.id).limit(page_size).offset(page*page_size)
+

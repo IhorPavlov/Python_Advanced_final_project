@@ -222,6 +222,9 @@ class Library:
             list_sorted_book.append(book)
         return list_sorted_book
 
+    def get_several_book(self, page: int, page_size: int):
+        return self.__storage.load_several_books(page, page_size)
+
     def search_book(self, book: str) -> list:
         search_res_list = []
         for i in self.get_all_books():

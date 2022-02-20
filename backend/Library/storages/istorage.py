@@ -28,6 +28,10 @@ class IStorage(ABC):
         pass
 
     @abstractmethod
+    def load_several_books(self, page: int, page_size: int) -> list:
+        pass
+
+    @abstractmethod
     def load_readers(self) -> list:
         pass
 

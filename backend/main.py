@@ -39,24 +39,43 @@ if not lib.get_all_books():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    # if request.method == 'POST':
+    #     search = request.form.get('search')
+    #     if not search:
+    #         return render_template('index.html', message='Введены некорректные данные')
+    #     return render_template('search_books.html', books=lib.search_book(search))
+
+    return render_template('index.html')
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def api_get_search_books():
+    '''search book by title, author or year'''
     if request.method == 'POST':
         search = request.form.get('search')
         if not search:
             return render_template('index.html', message='Введены некорректные данные')
         return render_template('search_books.html', books=lib.search_book(search))
-
-    return render_template('index.html')
-
-
-@app.route('/search_books', methods=['GET', 'POST'])
-def api_get_search_books():
-    return render_template('search_books.html')
+    return redirect(url_for('index'))
 
 
 @app.route('/books', methods=['GET', 'POST'])
 def api_get_all_books():
-    return render_template('books.html', books=lib.get_all_books())
+    # return render_template('books.html', books=lib.get_all_books(), page_count=)
+    page = request.args.get('page')
+    if not page or not page.isnumeric() or int(page) < 1:
+        page = 1
 
+    sort = request.args.get('sort')
+    if not sort:
+        sort = 'title'
+
+    return render_template('books.html',
+                           books=lib.get_several_book(page=int(page) - 1, page_size=10),
+                           page_count=(len(lib.get_all_books()) // 10) if (len(lib.get_all_books())%10==0) \
+                               else (len(lib.get_all_books()) // 10)+1,
+                           current_page=int(page),
+                           sort=sort)
 
 @app.route('/books_sorted_by_id', methods=['GET', 'POST'])
 def api_sort_by_id():
